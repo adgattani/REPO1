@@ -1,0 +1,31 @@
+Design and develop MongoDB queries using CRUD operations. (Use CRUD operations, SAVE method, logical operators).
+Queries (with outputs) - 
+1. mydb> db.createCollection("mycollection");
+
+2. mydb> db.mycollection.insertOne({name:"ANUSHREE",age:20});
+
+3. mydb> db.mycollection.find({});
+
+4. mydb>db.mycollection.insertMany([{name:"DHANSHREE",age:21},{name:"SHREEJA",age:19},{name:"ADITYA",age:20}]);
+
+5. mydb> db.mycollection.findOne({name:"ANUSHREE"});
+
+6. mydb> db.mycollection.find({ age: { $gt: 19 } });
+
+7. mydb> db.mycollection.updateOne({name:"ANUSHREE"},{$set:{age:21}});
+
+8. mydb> db.mycollection.updateMany({},{$inc:{age:1}});
+
+9. mydb> db.mycollection.deleteOne({name:"SHREEJA"});
+
+10. mydb> db.mycollection.insertOne({name:"HARSHITA",age:20})
+
+11. mydb> db.mycollection.deleteMany({age:{$lt:21}})
+
+12. mydb> db.mycollection.find({$and:[{name:"ADITYA"},{age:21}]});
+
+13. mydb> db.mycollection.find({$or:[{name:"ADITYA"},{age:23}]});
+
+14. mydb> db.mycollection.countDocuments({});
+
+15. mydb> db.mycollection.countDocuments({age:{$gt:21}})

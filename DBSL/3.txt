@@ -1,0 +1,55 @@
+Assignment Queries:
+
+1. Find the Student details and Placement details using NATURAL JOIN.
+
+select * from Student natural join PlacementDrive;
+
+2. Find all the student details with company_name who have conducted in same drive.
+
+SELECT s1.drive_id, s1.s_id, s1.s_name, s1.cgpa, s1.s_branch, s1.s_dob FROM Student s1 JOIN Student s2 ON s1.drive_id = s2.drive_id AND s1.s_id <> s2.s_id JOIN PlacementDrive pd ON s1.drive_id = pd.drive_id;
+
+3. List all the Student name and Student branch of Student having package 7 LPA.......
+
+select s.s_name,s.s_branch, from Student s join PlacementDrive p on s.drive_id=p.drive_id where p.package=700000;
+
+4. List all the student names ,company_name having T_fee more than 700000.
+
+select s.s_name,t.Tcompany_name from Student s join Training t on s.T_id=t.T_id where T_Fee>700000;
+
+5. Display all training details attended by “Siddhi Borse” in year 2019.
+
+select * from Training t join Student s. on t.T_id=s.T_id where s.s_name=’Siddhi Borse’ and t.T_date=’2019-12-17’;
+
+6. List the total number of companies who conduct training before 2020.
+
+select Tcompany_name,T_id from Training where T_date<'2020-12-31';
+
+7. List the students name with company ‘XYZ Corporation’ and location ’Mumbai’.
+
+SELECT s.s_name FROM Student s JOIN PlacementDrive p ON s.drive_id = p.drive_id WHERE p,Pcompany_name=’XYZ Corporation’ and p.location=’Mumbai’;
+
+8. Find the names of all Students who have joined ‘Tech Solutions Inc.‘ training in 2015 .
+
+Query for maximum cgpa:
+SELECT s_name FROM Student s join Training t on s.T_id=t.T_id where t.Tcompany_name=’Tech Solutions Inc.’ and year(t.T_date)=2019;
+
+9. Create a view showing the Student and Training details.
+
+create view studtrain as select Student.s_id,Student.s_name,Student.drive_id,Student.T_id,Training.Tcompany_name,Trainig.T_Fee from Student,Training where Student.T_id=Training.T_id;
+
+10. Perform Manipulation on simple view-Insert, update, delete, drop view.
+
+Create Simple View Query:
+create view simplestud as select * from Student;
+
+Insert Query:
+insert into simplestud values(20,5,103,'Sampada Kulkarni',9.56,'Computer Engineering',’2000-12-29’);
+
+Update Query:
+update simplestud set cgpa=9.32 where cgpa between 9.6 and 9.7;
+
+Delete Query:
+delete from simplestud where s_id=7;
+
+Drop Query:
+drop view simplestud;

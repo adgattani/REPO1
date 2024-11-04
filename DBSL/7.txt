@@ -1,0 +1,37 @@
+Database Trigger (All Types: Row level and Statement level triggers, Before and After Triggers). Write a database trigger on Library table. The System should keep track of the records that are being updated or deleted. The old value of updated or deleted records should be added in Library_Audit table.
+
+CREATE TABLE Library (library_id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255) NOT NULL, author VARCHAR(255) NOT NULL, publish_date DATE);
+
+CREATE TABLE Library_Audit (audit_id INT PRIMARY KEY AUTO_INCREMENT, library_id INT, old_title VARCHAR(255), old_author VARCHAR(255), old_publish_date DATE, action VARCHAR(10), action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+
+
+Trigger : Update
+
+DELIMITER $$
+CREATE TRIGGER before_update_library 
+BEFORE UPDATE ON Library 
+FOR EACH ROW
+BEGIN
+ INSERT INTO Library_Audit (library_id, old_title, old_author, old_publish_date, action) VALUES (OLD.library_id, OLD.title, OLD.author, OLD.publish_date, 'UPDATE');
+END$$
+
+
+Trigger : Delete
+DELIMITER $$
+CREATE TRIGGER before_delete_library
+BEFORE DELETE ON Library
+FOR EACH ROW
+BEGIN
+ INSERT INTO Library_Audit (library_id, old_title, old_author, old_publish_date, action) VALUES (OLD.library_id, OLD.title, OLD.author, OLD.publish_date, 'DELETE');
+END$$
+
+
+Insert :
+INSERT INTO Library (title, author, publish_date) VALUES ('1984', 'George Orwell', '1949-06-08'), ('To Kill a Mockingbird', 'Harper Lee', '1960-07-11'), ('The Great Gatsby', 'F. Scott Fitzgerald', '1925-04-10'), ('Moby Dick', 'Herman Melville', '1851-11-14');
+
+Update :
+UPDATE Library SET author = 'Eric Arthur Blair' WHERE title = '1984';
+
+Delete :
+DELETE FROM Library WHERE title = 'The Great Gatsby'

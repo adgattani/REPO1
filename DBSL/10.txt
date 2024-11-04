@@ -1,0 +1,101 @@
+MongoDB Aggregation and Indexing: Implement aggregation and indexing with suitable example using MongoDB.
+
+Queries (with outputs) - AGGREGATE
+
+1. mydb> db.collection1.insertMany([
+{
+ product: "Product A",
+ category: "Category 1",
+ sales: 100,
+ price: 29.99,
+ status: "active"
+ },
+ {
+ product: "Product B",
+ category: "Category 2",
+ sales: 150,
+ price: 19.99,
+ status: "active"
+ },
+ {
+ product: "Product C",
+ category: "Category 1",
+ sales: 80,
+ price: 39.99,
+ status: "inactive"
+ },
+ {
+ product: "Product D",
+ category: "Category 3",
+ sales: 200,
+ price: 49.99,
+ status: "active"
+ }
+ ]);
+
+2. mydb> db.collection1.find().pretty();
+
+3. mydb> db.collection1.aggregate([
+ {
+ $group: {
+ _id: "$category",
+ totalSales: { $sum: "$sales" },
+ productCount: { $count: {} }
+ }
+ }
+ ]);
+
+4. db.collection1.aggregate([{$sort:{sales:-1}},{$limit:2}]);
+
+5. mydb> db.collection1.aggregate([{$project:{product:1,category:1,sales:1}}]);
+
+6. mydb> db.collection1.aggregate([{$sort:{price:1}}]);
+
+7. mydb> db.collection1.aggregate([{$match:{category:"Category 1"}}]);
+
+8. mydb> db.collection1.aggregate([{$addFields:{totalprice:{$multiply:["$sales","$price"]}}}]);
+
+9. mydb> db.collection1.aggregate([{$count:"totalcount"}]);
+
+10. mydb> db.collection1.insertMany([
+ {
+ product: "Product E",
+ category: "Category 1",
+ sales: [100, 150], 
+ price: 29.99,
+ status: "active"
+ },
+ {
+ product: "Product F",
+ category: "Category 2",
+ sales: [200], 
+ price: 19.99,
+ status: "active"
+ },
+ {
+ product: "Product G",
+ category: "Category 1",
+ sales: [80], 
+ price: 39.99,
+ status: "inactive"
+ },
+ {
+ product: "Product H",
+ category: "Category 3",
+ sales: [300, 100], 
+ price: 49.99,
+ status: "active"
+ }
+ ]);
+
+11. mydb> db.collection1.aggregate([{$unwind:"$sales"}]);
+
+12. mydb> db.collection1.mapReduce(function() emit(this.category,this.sales);},function(key,value){return Array.sum(value);},{query:{status:"active"},out:"totalsales"});
+
+Queries (with outputs) - INDEX - 
+
+1. mydb> db.collection1.createIndex({category:1});
+
+2. mydb> db.collection1.getIndexes();
+
+3. mydb> db.collection1.dropIndex("category_1");

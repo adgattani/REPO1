@@ -1,0 +1,55 @@
+Named PL/SQL Block: PL/SQL Stored Procedure and Stored Function.
+Write a Stored Procedure namely proc_Grade for the categorization of student. If marks scored by students in examination is <=1500 and marks>=990 then student will be placed in distinction category if marks scored are between 989 and 900 category is first class, if marks 899 and 825 category is Higher Second Class.
+Write a PL/SQLblock to use procedure created with above requirement.
+Stud_Marks(name, total_marks)
+Result(Roll,Name, Class)
+
+
+create table Student1(rollno int primary key not null, name varchar(20), marks int);
+insert into Student1 values(1,"Sid",999),(2,"Anushree",1350),(3,"Dhanashree",945),(4,"Shreeja",730),(7,"Harsh",-5);create table result(rollno int,name varchar(20), class varchar(20));
+
+
+
+Procedure : 
+
+delimiter //
+create procedure calClass(IN rollno int)
+pro_label:begin
+declare grade varchar(20);
+declare stud_name varchar(20);
+declare stud_marks int;
+declare exit handler for sqlexception
+begin
+ select 'An error occurred while processing the request' as error_message;
+ end; 
+select name,marks into stud_name,stud_marks from Student1 where Student1.rollno=rollno;
+ if stud_marks < 0 or stud_marks > 1500 then
+ select 'Invalid marks value. Marks must be between 0 and 1500.' as error_message; 
+ leave pro_label;
+ end if;
+ set grade=assign(stud_marks);
+ insert into result values(rollno,stud_name,grade);
+end //
+
+
+
+Function :
+
+delimiter //
+create function assign(stud_marks int)
+returns varchar(20)
+begin
+declare result varchar(20);
+case
+when stud_marks<=1500 and stud_marks>=990
+	then set result= "Destinction";
+when stud_marks<=989 and stud_marks>=900
+	then set result="First class";
+when stud_marks<=899 and stud_marks>=825
+	then set result= "Higher second class";
+else
+	set result="No grade";
+end case;
+return result;
+end //
+delimiter ;

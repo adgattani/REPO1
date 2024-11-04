@@ -1,0 +1,71 @@
+1. Create Student Table:
+
+CREATE TABLE Student (s_id INT AUTO_INCREMENT PRIMARY KEY, drive_id INT NOT NULL,T_id INT,s_name VARCHAR(50) NOT NULL, cgpa FLOAT,s_branch VARCHAR(50) NOT NULL,s_dob DATE NOT NULL,FOREIGN KEY (T_id) REFERENCES Training(T_id));
+
+2. Create PlacementDrive Table:
+
+create table PlacementDrive(Drive_id int primary key,Pcompany_name varchar(50) not null,package bigint not null,location varchar(50) not null);
+
+3. Create Training Table:
+
+create table Training(T_id int primary key,Tcompany_name varchar(50) not null,T_fee bigint not null,T_year int not null);
+
+4. Create Student view:
+
+create view Student_View as select s_id,drive_id,T_id,s_name,cgpa,s_branch,s_dob from Student;
+
+5. Create index on Student:
+
+create index S_Index on Student(s_name,cgpa);
+
+Assignment Queries:
+
+1. Insert at least 10 records in the Student table and insert other tables accordingly.
+
+Student -
+INSERT INTO Student (s_id, Drive_id, T_id, s_name, CGPA, s_branch, S_dob) VALUES (1, 101, 1, 'Alana', 8.5, 'Computer Engineering', '2000-01-15'),(2, 102, 2, 'David', 7.8, 'IT', '1999-02-20'),(3, 103, 3, 'Danny', 9.1, 'Electrical Engineering', '2000-03-25'),(4, 104, 4, 'Amalia', 6.9, 'Computer Engineering','1998-04-30'),(5, 105, 5, 'Diya', 7.2, 'IT', '2000-05-10'),(6, 106, 6, 'Bansi', 6.5, 'Electrical Engineering', '1999-05-10'),(6, 106, 6, 'Chinmayi', 6.5, 'Electrical Enging', '2000-07-20'),(8, 108, 1, 'Dhanashree', 9.0, 'IT', '1998-08-25'),(9, 109, 2, 'Anu', 7.5, 'Electrical Engineering', '1999-09-30'),(10, 110, 3, 'Deepak', 8.3, 'Computer Engineering', '2000-10-10');
+
+PlacementDrive –
+INSERT INTO PlacementDrive (Drive_id, Pcompany_name, package, location) VALUES (1, 'Reliance Industries', 950000.00, 'Mumbai'),(2, 'Flipkart', 900000.00, 'Pune'),(3, 'Aditya Birla Group', 850000.00, 'Bangalore'),(4, 'Mahindra & Mahindra', 920000.00, 'Chennai'),(5, 'Paytm', 870000.00, 'Pune'),(6, 'Ola Cabs', 890000.00, 'Mumbai'),(7, 'Zomato', 860000.00, 'Hyderabad');
+
+Training –
+INSERT INTO Training (T_id, Tcompany_name, T_Fee, T_year) VALUES (1, 'Tata Consultancy Services', 50000.00, 2016),(2, 'Infosys', 60000.00, 2018),(3, 'Wipro', 55000.00, 2020),(4, 'HCL Technologies', 52000.00, 2019),(5, 'Tech Mahindra', 58000.00, 2021),(6, 'Cognizant', 62000.00, 2022),(7, 'Larsen & Toubro Infotech', 57000.00, 2023);
+
+2. Display all students details with branch ‘Computer ‘and ‘It’ and student name starting with 'a' or 'd'.
+
+select * from Student where (s_branch='Computer Engineering' or s_branch='IT') and (s_name like 'A%' or s_name like 'D%');
+
+3. List the number of different companies.(use of distinct)
+
+select distinct Pcompany_name from PlacementDrive;
+
+4. Give 15% increase in fee of the Training whose joining year is 2019.
+
+update Training set T_fee=T_fee+(T_fee*0.15) where T_year=2019;
+
+5. Delete Student details having CGPA score less than 7.
+
+delete from Student where cgpa<7;
+
+6. Find the names of companies belonging to Pune or Mumbai
+
+select Pcompany_name from PlacementDrive where location='Pune' or location='Mumbai';
+
+7. Find the student name who joined training in 1-1-2019 as well as in 1-1-2021
+
+SELECT s.s_name, t.Tcompany_name, t.T_year AS training_year FROM Student s JOIN Training t ON s.T_id = t.T_id WHERE t.T_year IN (2019, 2021);
+
+8. Find the student name having maximum CGPA score and names of students having CGPA score between 7 to 9
+Query for maximum cgpa:
+SELECT s_name, CGPA FROM Student WHERE CGPA = (SELECT MAX(CGPA) FROM Student);
+
+Query for cgpa between 7 to 9:
+SELECT s_name, cgpa FROM Student WHERE cgpa BETWEEN 7 AND 9;
+
+9. Display all Student name with T_id with decreasing order of Fees
+
+SELECT s.s_name, s.T_id, t.T_fee FROM Student s JOIN Training t ON s.T_id = t.T_id ORDER BY t.T_fee DESC;
+
+10. Display PCompany name, S_name ,location and Package with Package 30K, 40K and 50k
+
+SELECT pd.Pcompany_name, s.s_name, pd.location, pd.package FROM PlacementDrive pd JOIN Student s ON pd.Drive_id = s.Drive_id WHERE pd.package=30000 or pd.package=40000 or pd.package=50000;
